@@ -1,10 +1,11 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
-import { api, Firm, FiguresResponse } from "@/lib/api";
+import { api, onWaking, Firm, FiguresResponse } from "@/lib/api";
 import { StatusBadge, PassFail } from "./components/StatusBadge";
 import { TracePanel } from "./components/TracePanel";
 import { AuditPanel } from "./components/AuditPanel";
 import { ConfigPanel } from "./components/ConfigPanel";
+import { HowItWorks } from "./components/HowItWorks";
 
 type Tab = "report" | "audit" | "config";
 
@@ -15,7 +16,10 @@ export default function Dashboard() {
   const [err, setErr] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [running, setRunning] = useState(false);
+  const [waking, setWaking] = useState(false);
   const [selected, setSelected] = useState<string | null>(null);
+
+  useEffect(() => { onWaking(setWaking); }, []);
 
   const load = useCallback((f: Firm) => {
     setLoading(true);
@@ -57,7 +61,16 @@ export default function Dashboard() {
         </div>
       </header>
 
+      {waking && (
+        <div className="mb-4 rounded-lg border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-200">
+          ⏳ Waking the backend up… the free-tier server sleeps when idle, so the first
+          load can take ~30–60 seconds. Hang tight — it&apos;ll load automatically.
+        </div>
+      )}
+
       {data && <SummaryBar data={data} />}
+
+      <HowItWorks />
 
       <nav className="mb-4 mt-6 flex gap-1 border-b border-slate-800">
         {(["report", "audit", "config"] as Tab[]).map((t) => (
@@ -73,7 +86,11 @@ export default function Dashboard() {
         ))}
       </nav>
 
-      {err && <p className="mb-4 rounded bg-rose-500/10 p-3 text-sm text-rose-300">{err} — is the API running on :8000?</p>}
+      {err && !waking && (
+        <p className="mb-4 rounded bg-rose-500/10 p-3 text-sm text-rose-300">
+          Couldn&apos;t reach the API ({err}). The backend may still be waking up — try again in a moment.
+        </p>
+      )}
 
       {tab === "report" && (
         <>
@@ -138,12 +155,12 @@ function FiguresTable({ data, onSelect }: { data: FiguresResponse; onSelect: (id
     <table className="w-full overflow-hidden rounded-lg text-sm ring-1 ring-slate-800">
       <thead className="bg-slate-900 text-left text-slate-400">
         <tr>
-          <th className="px-4 py-2">Metric</th>
-          <th className="px-4 py-2">Value</th>
-          <th className="px-4 py-2">Limit</th>
-          <th className="px-4 py-2">Utilization</th>
-          <th className="px-4 py-2">Status</th>
-          <th className="px-4 py-2">vs key</th>
+          <th className="px-4 py-2" title="The rule being checked">Metric</th>
+          <th className="px-4 py-2" title="What the fund actually is">Value</th>
+          <th className="px-4 py-2" title="What the rule allows">Limit</th>
+          <th className="px-4 py-2" title="How much of the limit is used (Firm B reports basis points: 6000 bps = 60%)">Utilization</th>
+          <th className="px-4 py-2" title="OK = within limit · AT LIMIT = exactly at it · BREACH = outside it">Status</th>
+          <th className="px-4 py-2" title="Matches the official answer key">vs key</th>
           <th className="px-4 py-2"></th>
         </tr>
       </thead>

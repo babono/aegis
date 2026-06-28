@@ -2,16 +2,36 @@
 // In prod, NEXT_PUBLIC_API_BASE points straight at the deployed backend.
 const BASE = process.env.NEXT_PUBLIC_API_BASE ?? "";
 
-async function get<T>(path: string): Promise<T> {
-  const r = await fetch(`${BASE}${path}`, { cache: "no-store" });
-  if (!r.ok) throw new Error(`${path} → ${r.status}`);
-  return r.json();
+// Render's free tier sleeps after idle and takes ~30–60s to wake. We retry on
+// network errors / 502-504 so a cold start resolves into a load instead of an
+// error. `onWaking` lets the UI show a "waking the backend up" message.
+let wakingHook: ((waking: boolean) => void) | null = null;
+export function onWaking(cb: (waking: boolean) => void) { wakingHook = cb; }
+
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+async function request<T>(path: string, init?: RequestInit): Promise<T> {
+  const maxAttempts = 12; // ~12 × 5s ≈ 60s, covers a cold start
+  let lastErr: unknown;
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
+    try {
+      const r = await fetch(`${BASE}${path}`, { cache: "no-store", ...init });
+      if (r.status >= 502 && r.status <= 504) throw new Error(`waking (${r.status})`);
+      if (!r.ok) throw new Error(`${path} → ${r.status}`);
+      wakingHook?.(false);
+      return r.json();
+    } catch (e) {
+      lastErr = e;
+      if (attempt === 0) wakingHook?.(true); // first failure → likely cold start
+      if (attempt < maxAttempts - 1) await sleep(5000);
+    }
+  }
+  wakingHook?.(false);
+  throw lastErr;
 }
-async function post<T>(path: string): Promise<T> {
-  const r = await fetch(`${BASE}${path}`, { method: "POST" });
-  if (!r.ok) throw new Error(`${path} → ${r.status}`);
-  return r.json();
-}
+
+const get = <T>(path: string) => request<T>(path);
+const post = <T>(path: string) => request<T>(path, { method: "POST" });
 
 export type Firm = "A" | "B";
 
