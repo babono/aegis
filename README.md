@@ -6,6 +6,13 @@ report where **every figure is reproducible, traceable through a knowledge graph
 its source passage, and provably not produced by a language model** — and where the
 same engine reproduces a second firm's answer key by configuration alone.
 
+## Demo
+
+![Dashboard demo — switch Firm A/B and trace a figure to its source](docs/demo.gif)
+
+*Switch **Firm A → Firm B** and three figures change (configuration only, no code edit);
+click any figure for its **graph path**, **source citation**, and **delta vs the answer key**.*
+
 ## Quick start
 
 ### Option A — docker compose (recommended; uses Neo4j)

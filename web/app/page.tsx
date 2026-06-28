@@ -108,6 +108,21 @@ export default function Dashboard() {
       {tab === "config" && <ConfigPanel />}
 
       {selected && <TracePanel firm={firm} figureId={selected} onClose={() => setSelected(null)} />}
+
+      <footer className="mt-12 border-t border-slate-800 pt-6 text-xs text-slate-500">
+        <p>
+          <span className="text-slate-400">Meridian Compliance</span> — figures are computed by a
+          deterministic engine traversing a knowledge graph, traced to their source passage, and
+          reconciled to each firm&apos;s answer key. The language model writes narrative only,
+          behind a firewall.
+        </p>
+        <p className="mt-2">
+          <a href="https://github.com/babono/aegis" target="_blank" rel="noreferrer"
+             className="text-indigo-400 hover:text-indigo-300">
+            Source on GitHub →
+          </a>
+        </p>
+      </footer>
     </main>
   );
 }
@@ -176,7 +191,7 @@ function FiguresTable({ data, onSelect }: { data: FiguresResponse; onSelect: (id
                 <td className="px-4 py-2">{f.metric}</td>
                 <td className="px-4 py-2 font-medium">{f.value ?? "—"}</td>
                 <td className="px-4 py-2 text-slate-400">{f.limit ?? "—"}</td>
-                <td className="px-4 py-2 text-slate-400">{f.utilization ?? "—"}</td>
+                <td className="px-4 py-2 text-slate-400"><Util util={f.utilization} /></td>
                 <td className="px-4 py-2"><StatusBadge status={f.status} /></td>
                 <td className="px-4 py-2"><PassFail result={f.reconciled} /></td>
                 <td className="px-4 py-2 text-right text-xs text-indigo-400">trace →</td>
@@ -186,6 +201,20 @@ function FiguresTable({ data, onSelect }: { data: FiguresResponse; onSelect: (id
         })}
       </tbody>
     </table>
+  );
+}
+
+// Firm B reports utilization in truncated basis points (e.g. "5833 bps"). Show a
+// muted percentage hint so it's readable at a glance (5833 bps = 58.3%).
+function Util({ util }: { util: string | null }) {
+  if (!util) return <>—</>;
+  const m = util.match(/^(\d+)\s*bps$/);
+  if (!m) return <>{util}</>;
+  const pct = (parseInt(m[1], 10) / 100).toFixed(1);
+  return (
+    <span>
+      {util} <span className="text-slate-600">({pct}%)</span>
+    </span>
   );
 }
 
