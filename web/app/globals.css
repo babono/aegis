@@ -3,9 +3,25 @@
 @tailwind utilities;
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
+  --primary: #6562E7;
+  --primary-hover: #5451D4;
+  --primary-soft: #ECECFA;
+  --accent-teal: #73DFD7;
+  --accent-violet: #A5A6F6;
+  --bg: #FFFFFF;
+  --bg-soft: #F6F6FB;
+  --bg-muted: #ECECFA;
+  --line: #E2E2F0;
+  --line-dark: #C8C8E8;
+  --t-0: #0B111D;
+  --t-1: #1E2A3B;
+  --t-2: #53627E;
+  --t-3: #8A96A8;
+  --t-4: #B8C0CC;
+  --r: 6px;
 }
 
 body {
-  @apply bg-slate-950 text-slate-100 antialiased;
+  @apply bg-bg-soft text-ink-1 antialiased;
 }

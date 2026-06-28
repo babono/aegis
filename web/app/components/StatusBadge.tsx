@@ -1,24 +1,24 @@
 const STYLES: Record<string, string> = {
-  OK: "bg-emerald-500/15 text-emerald-300 ring-emerald-500/30",
-  BREACH: "bg-rose-500/15 text-rose-300 ring-rose-500/30",
-  "AT LIMIT": "bg-amber-500/15 text-amber-300 ring-amber-500/30",
-  ERROR: "bg-slate-500/15 text-slate-300 ring-slate-500/30",
+  OK: "bg-ok-bg text-ok-text ring-ok-line",
+  BREACH: "bg-danger-bg text-danger-text ring-danger-line",
+  "AT LIMIT": "bg-warn-bg text-warn-text ring-warn-line",
+  ERROR: "bg-bg-muted text-ink-2 ring-line-dark",
 };
 
 export function StatusBadge({ status }: { status: string | null }) {
   const s = status ?? "ERROR";
   return (
-    <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1 ${STYLES[s] ?? STYLES.ERROR}`}>
+    <span className={`inline-flex items-center rounded px-2.5 py-0.5 text-xs font-bold ring-1 ${STYLES[s] ?? STYLES.ERROR}`}>
       {s}
     </span>
   );
 }
 
 export function PassFail({ result }: { result: string | null | undefined }) {
-  if (!result) return <span className="text-slate-500">—</span>;
+  if (!result) return <span className="text-ink-4">—</span>;
   const ok = result === "PASS";
   return (
-    <span className={ok ? "text-emerald-400" : "text-rose-400"}>
+    <span className={ok ? "font-semibold text-ok-text" : "font-semibold text-danger-text"}>
       {ok ? "✓ pass" : `✗ ${result.toLowerCase()}`}
     </span>
   );
