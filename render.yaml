@@ -1,0 +1,18 @@
+# Render blueprint for the live demo backend (the FastAPI service).
+# The frontend deploys separately on Vercel and points at this service's URL via
+# NEXT_PUBLIC_API_BASE. No database is hosted: the API uses the in-process
+# embedded graph backend (identical results to Neo4j, which runs in local docker).
+services:
+  - type: web
+    name: meridian-compliance-api
+    runtime: docker
+    dockerfilePath: ./api/Dockerfile
+    dockerContext: .
+    plan: free
+    healthCheckPath: /api/health
+    envVars:
+      - key: API_GRAPH_BACKEND
+        value: embedded
+      - key: CORS_ORIGINS
+        # Set to your Vercel domain after the frontend is deployed.
+        value: "*"

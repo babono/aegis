@@ -1,0 +1,75 @@
+{
+  "meta": {
+    "source_doc": "sample_fund_guidelines.pdf",
+    "guidelines_doc_id": "MAM-FI-2024-GL-007",
+    "guidelines_version": "2.1",
+    "extraction_method": "llm_assisted_human_approved",
+    "extractor_model": "deepseek-chat",
+    "approved_by": "compliance_reviewer",
+    "approved_at": "2024-01-15T09:00:00Z",
+    "note": "Frozen, human-reviewed extraction of the guidelines. The graph builder reads ONLY this file (never the LLM) so figure computation is byte-reproducible. Re-extraction (src/ingest/extract_guidelines.py) regenerates a candidate; a human approves it through the review gate before it is trusted."
+  },
+  "chunks": [
+    {"chunk_id": "chunk_2a3f", "page": 1, "section": "2", "passage_summary": "Section 2 — Permitted Investments & Allocation Limits (SGS, MAS Bills, IG Corp, High Yield)"},
+    {"chunk_id": "chunk_2b71", "page": 2, "section": "2", "passage_summary": "Section 2 (cont.) — allocation limits (FX, Structured Credit, Cash) and aggregate non-IG cap note"},
+    {"chunk_id": "chunk_31c8", "page": 2, "section": "3.1", "passage_summary": "Section 3.1 — Market Risk limits (Modified Duration, DV01, VaR, ES)"},
+    {"chunk_id": "chunk_32d4", "page": 2, "section": "3.2", "passage_summary": "Section 3.2 — Credit & Counterparty Risk (single-issuer 8%, GRE 12%, counterparty 5%)"},
+    {"chunk_id": "chunk_33e9", "page": 2, "section": "3.3", "passage_summary": "Section 3.3 — Liquidity Risk (liquid-assets floor 25% normal / 35% stress)"}
+  ],
+  "nodes": [
+    {"id": "ac_sgs", "labels": ["AssetClass"], "props": {"name": "Singapore Government Securities", "code": "sgs"}, "provenance": {"source_doc": "sample_fund_guidelines.pdf", "page": 1, "chunk_id": "chunk_2a3f", "ingested_at": "2024-01-15T09:00:00Z", "extraction_confidence": 0.99}},
+    {"id": "ac_mas_bills", "labels": ["AssetClass"], "props": {"name": "MAS Bills", "code": "mas_bills"}, "provenance": {"source_doc": "sample_fund_guidelines.pdf", "page": 1, "chunk_id": "chunk_2a3f", "ingested_at": "2024-01-15T09:00:00Z", "extraction_confidence": 0.99}},
+    {"id": "ac_ig_corp", "labels": ["AssetClass"], "props": {"name": "Investment Grade Corporate Bonds", "code": "ig_corp"}, "provenance": {"source_doc": "sample_fund_guidelines.pdf", "page": 1, "chunk_id": "chunk_2a3f", "ingested_at": "2024-01-15T09:00:00Z", "extraction_confidence": 0.98}},
+    {"id": "ac_high_yield", "labels": ["AssetClass"], "props": {"name": "High Yield Bonds", "code": "high_yield"}, "provenance": {"source_doc": "sample_fund_guidelines.pdf", "page": 1, "chunk_id": "chunk_2a3f", "ingested_at": "2024-01-15T09:00:00Z", "extraction_confidence": 0.98}},
+    {"id": "ac_fx_bonds", "labels": ["AssetClass"], "props": {"name": "Foreign Currency Bonds", "code": "fx_bonds"}, "provenance": {"source_doc": "sample_fund_guidelines.pdf", "page": 2, "chunk_id": "chunk_2b71", "ingested_at": "2024-01-15T09:00:00Z", "extraction_confidence": 0.98}},
+    {"id": "ac_structured_credit", "labels": ["AssetClass"], "props": {"name": "Structured Credit", "code": "structured_credit"}, "provenance": {"source_doc": "sample_fund_guidelines.pdf", "page": 2, "chunk_id": "chunk_2b71", "ingested_at": "2024-01-15T09:00:00Z", "extraction_confidence": 0.98}},
+    {"id": "ac_cash", "labels": ["AssetClass"], "props": {"name": "Cash & Cash Equivalents", "code": "cash"}, "provenance": {"source_doc": "sample_fund_guidelines.pdf", "page": 2, "chunk_id": "chunk_2b71", "ingested_at": "2024-01-15T09:00:00Z", "extraction_confidence": 0.99}},
+
+    {"id": "lim_sgs", "labels": ["Limit"], "props": {"basis": "pct_nav", "min": 20, "max": 60, "note": "AAA-rated only"}, "provenance": {"source_doc": "sample_fund_guidelines.pdf", "page": 1, "chunk_id": "chunk_2a3f", "ingested_at": "2024-01-15T09:00:00Z", "extraction_confidence": 0.99}},
+    {"id": "lim_mas_bills", "labels": ["Limit"], "props": {"basis": "pct_nav", "min": 0, "max": 40, "note": "Liquidity buffer"}, "provenance": {"source_doc": "sample_fund_guidelines.pdf", "page": 1, "chunk_id": "chunk_2a3f", "ingested_at": "2024-01-15T09:00:00Z", "extraction_confidence": 0.99}},
+    {"id": "lim_ig_corp", "labels": ["Limit"], "props": {"basis": "pct_nav", "min": 10, "max": 50, "note": "Min BBB- (S&P / Moody's)"}, "provenance": {"source_doc": "sample_fund_guidelines.pdf", "page": 1, "chunk_id": "chunk_2a3f", "ingested_at": "2024-01-15T09:00:00Z", "extraction_confidence": 0.98}},
+    {"id": "lim_high_yield", "labels": ["Limit"], "props": {"basis": "pct_nav", "min": 0, "max": 15, "note": "Max BB+ rating; APAC issuers only"}, "provenance": {"source_doc": "sample_fund_guidelines.pdf", "page": 1, "chunk_id": "chunk_2a3f", "ingested_at": "2024-01-15T09:00:00Z", "extraction_confidence": 0.98}},
+    {"id": "lim_fx_bonds", "labels": ["Limit"], "props": {"basis": "pct_nav", "min": 0, "max": 20, "note": "Currency risk must be fully hedged"}, "provenance": {"source_doc": "sample_fund_guidelines.pdf", "page": 2, "chunk_id": "chunk_2b71", "ingested_at": "2024-01-15T09:00:00Z", "extraction_confidence": 0.98}},
+    {"id": "lim_structured_credit", "labels": ["Limit"], "props": {"basis": "pct_nav", "min": 0, "max": 10, "note": "AAA tranche only; pre-approved list"}, "provenance": {"source_doc": "sample_fund_guidelines.pdf", "page": 2, "chunk_id": "chunk_2b71", "ingested_at": "2024-01-15T09:00:00Z", "extraction_confidence": 0.98}},
+    {"id": "lim_cash", "labels": ["Limit"], "props": {"basis": "pct_nav", "min": 5, "max": 25, "note": "Minimum liquidity floor"}, "provenance": {"source_doc": "sample_fund_guidelines.pdf", "page": 2, "chunk_id": "chunk_2b71", "ingested_at": "2024-01-15T09:00:00Z", "extraction_confidence": 0.99}},
+
+    {"id": "agg_non_ig", "labels": ["Aggregate"], "props": {"name": "non_ig", "description": "Aggregate non-investment-grade exposure"}, "provenance": {"source_doc": "sample_fund_guidelines.pdf", "page": 2, "chunk_id": "chunk_2b71", "ingested_at": "2024-01-15T09:00:00Z", "extraction_confidence": 0.97}},
+    {"id": "lim_non_ig", "labels": ["Limit"], "props": {"basis": "pct_nav", "min": null, "max": 20, "note": "Aggregate non-IG (High Yield + Structured Credit) must not exceed 20% of NAV"}, "provenance": {"source_doc": "sample_fund_guidelines.pdf", "page": 2, "chunk_id": "chunk_2b71", "ingested_at": "2024-01-15T09:00:00Z", "extraction_confidence": 0.97}},
+
+    {"id": "cap_single_issuer", "labels": ["Cap"], "props": {"name": "single_issuer", "basis": "pct_nav", "max": 8, "scope": "per_issuer", "excludes": "Singapore Government"}, "provenance": {"source_doc": "sample_fund_guidelines.pdf", "page": 2, "chunk_id": "chunk_32d4", "ingested_at": "2024-01-15T09:00:00Z", "extraction_confidence": 0.98}},
+    {"id": "cap_gre", "labels": ["Cap"], "props": {"name": "gre", "basis": "pct_nav", "max": 12, "scope": "per_gre_issuer"}, "provenance": {"source_doc": "sample_fund_guidelines.pdf", "page": 2, "chunk_id": "chunk_32d4", "ingested_at": "2024-01-15T09:00:00Z", "extraction_confidence": 0.98}},
+    {"id": "cap_counterparty", "labels": ["Cap"], "props": {"name": "counterparty", "basis": "pct_nav", "max": 5, "scope": "per_counterparty"}, "provenance": {"source_doc": "sample_fund_guidelines.pdf", "page": 2, "chunk_id": "chunk_32d4", "ingested_at": "2024-01-15T09:00:00Z", "extraction_confidence": 0.90}},
+
+    {"id": "floor_liquid_assets", "labels": ["Floor"], "props": {"name": "liquid_assets", "basis": "pct_nav", "min": 25, "stress_min": 35, "members": ["Singapore Government Securities", "MAS Bills", "Cash & Cash Equivalents"], "note": "Liquid assets (SGS + MAS Bills + Cash) >= 25% normal, 35% stress"}, "provenance": {"source_doc": "sample_fund_guidelines.pdf", "page": 2, "chunk_id": "chunk_33e9", "ingested_at": "2024-01-15T09:00:00Z", "extraction_confidence": 0.97}},
+
+    {"id": "rm_modified_duration", "labels": ["RiskMetric"], "props": {"name": "modified_duration", "label": "Modified Duration", "unit": "years", "frequency": "Daily"}, "provenance": {"source_doc": "sample_fund_guidelines.pdf", "page": 2, "chunk_id": "chunk_31c8", "ingested_at": "2024-01-15T09:00:00Z", "extraction_confidence": 0.98}},
+    {"id": "thr_modified_duration", "labels": ["Threshold"], "props": {"min": 2.0, "max": 6.5, "unit": "years"}, "provenance": {"source_doc": "sample_fund_guidelines.pdf", "page": 2, "chunk_id": "chunk_31c8", "ingested_at": "2024-01-15T09:00:00Z", "extraction_confidence": 0.98}},
+    {"id": "rm_dv01", "labels": ["RiskMetric"], "props": {"name": "dv01", "label": "Portfolio DV01", "unit": "sgd_per_bp", "frequency": "Daily"}, "provenance": {"source_doc": "sample_fund_guidelines.pdf", "page": 2, "chunk_id": "chunk_31c8", "ingested_at": "2024-01-15T09:00:00Z", "extraction_confidence": 0.98}},
+    {"id": "thr_dv01", "labels": ["Threshold"], "props": {"min": null, "max": 85000, "unit": "sgd_per_bp"}, "provenance": {"source_doc": "sample_fund_guidelines.pdf", "page": 2, "chunk_id": "chunk_31c8", "ingested_at": "2024-01-15T09:00:00Z", "extraction_confidence": 0.98}},
+
+    {"id": "ba_duration", "labels": ["BreachAction"], "props": {"action": "PM notification within 1h", "timeframe": "1h"}, "provenance": {"source_doc": "sample_fund_guidelines.pdf", "page": 2, "chunk_id": "chunk_31c8", "ingested_at": "2024-01-15T09:00:00Z", "extraction_confidence": 0.96}},
+    {"id": "ba_dv01", "labels": ["BreachAction"], "props": {"action": "Risk Committee alert", "timeframe": "daily"}, "provenance": {"source_doc": "sample_fund_guidelines.pdf", "page": 2, "chunk_id": "chunk_31c8", "ingested_at": "2024-01-15T09:00:00Z", "extraction_confidence": 0.96}},
+    {"id": "owner_pm", "labels": ["Owner"], "props": {"name": "Portfolio Manager", "role": "PM"}, "provenance": {"source_doc": "sample_fund_guidelines.pdf", "page": 2, "chunk_id": "chunk_31c8", "ingested_at": "2024-01-15T09:00:00Z", "extraction_confidence": 0.95}},
+    {"id": "owner_risk_committee", "labels": ["Owner"], "props": {"name": "Risk Committee", "role": "Risk Committee"}, "provenance": {"source_doc": "sample_fund_guidelines.pdf", "page": 2, "chunk_id": "chunk_31c8", "ingested_at": "2024-01-15T09:00:00Z", "extraction_confidence": 0.95}}
+  ],
+  "edges": [
+    {"from": "ac_sgs", "to": "lim_sgs", "type": "HAS_LIMIT", "provenance": {"source_doc": "sample_fund_guidelines.pdf", "page": 1, "chunk_id": "chunk_2a3f", "ingested_at": "2024-01-15T09:00:00Z", "extraction_confidence": 0.99}},
+    {"from": "ac_mas_bills", "to": "lim_mas_bills", "type": "HAS_LIMIT", "provenance": {"source_doc": "sample_fund_guidelines.pdf", "page": 1, "chunk_id": "chunk_2a3f", "ingested_at": "2024-01-15T09:00:00Z", "extraction_confidence": 0.99}},
+    {"from": "ac_ig_corp", "to": "lim_ig_corp", "type": "HAS_LIMIT", "provenance": {"source_doc": "sample_fund_guidelines.pdf", "page": 1, "chunk_id": "chunk_2a3f", "ingested_at": "2024-01-15T09:00:00Z", "extraction_confidence": 0.98}},
+    {"from": "ac_high_yield", "to": "lim_high_yield", "type": "HAS_LIMIT", "provenance": {"source_doc": "sample_fund_guidelines.pdf", "page": 1, "chunk_id": "chunk_2a3f", "ingested_at": "2024-01-15T09:00:00Z", "extraction_confidence": 0.98}},
+    {"from": "ac_fx_bonds", "to": "lim_fx_bonds", "type": "HAS_LIMIT", "provenance": {"source_doc": "sample_fund_guidelines.pdf", "page": 2, "chunk_id": "chunk_2b71", "ingested_at": "2024-01-15T09:00:00Z", "extraction_confidence": 0.98}},
+    {"from": "ac_structured_credit", "to": "lim_structured_credit", "type": "HAS_LIMIT", "provenance": {"source_doc": "sample_fund_guidelines.pdf", "page": 2, "chunk_id": "chunk_2b71", "ingested_at": "2024-01-15T09:00:00Z", "extraction_confidence": 0.98}},
+    {"from": "ac_cash", "to": "lim_cash", "type": "HAS_LIMIT", "provenance": {"source_doc": "sample_fund_guidelines.pdf", "page": 2, "chunk_id": "chunk_2b71", "ingested_at": "2024-01-15T09:00:00Z", "extraction_confidence": 0.99}},
+
+    {"from": "ac_high_yield", "to": "agg_non_ig", "type": "CONTRIBUTES_TO", "provenance": {"source_doc": "sample_fund_guidelines.pdf", "page": 2, "chunk_id": "chunk_2b71", "ingested_at": "2024-01-15T09:00:00Z", "extraction_confidence": 0.97}},
+    {"from": "ac_structured_credit", "to": "agg_non_ig", "type": "CONTRIBUTES_TO", "provenance": {"source_doc": "sample_fund_guidelines.pdf", "page": 2, "chunk_id": "chunk_2b71", "ingested_at": "2024-01-15T09:00:00Z", "extraction_confidence": 0.97}},
+    {"from": "agg_non_ig", "to": "lim_non_ig", "type": "HAS_LIMIT", "provenance": {"source_doc": "sample_fund_guidelines.pdf", "page": 2, "chunk_id": "chunk_2b71", "ingested_at": "2024-01-15T09:00:00Z", "extraction_confidence": 0.97}},
+
+    {"from": "rm_modified_duration", "to": "thr_modified_duration", "type": "HAS_THRESHOLD", "provenance": {"source_doc": "sample_fund_guidelines.pdf", "page": 2, "chunk_id": "chunk_31c8", "ingested_at": "2024-01-15T09:00:00Z", "extraction_confidence": 0.98}},
+    {"from": "rm_modified_duration", "to": "ba_duration", "type": "HAS_BREACH_ACTION", "provenance": {"source_doc": "sample_fund_guidelines.pdf", "page": 2, "chunk_id": "chunk_31c8", "ingested_at": "2024-01-15T09:00:00Z", "extraction_confidence": 0.96}},
+    {"from": "ba_duration", "to": "owner_pm", "type": "OWNED_BY", "provenance": {"source_doc": "sample_fund_guidelines.pdf", "page": 2, "chunk_id": "chunk_31c8", "ingested_at": "2024-01-15T09:00:00Z", "extraction_confidence": 0.95}},
+    {"from": "rm_dv01", "to": "thr_dv01", "type": "HAS_THRESHOLD", "provenance": {"source_doc": "sample_fund_guidelines.pdf", "page": 2, "chunk_id": "chunk_31c8", "ingested_at": "2024-01-15T09:00:00Z", "extraction_confidence": 0.98}},
+    {"from": "rm_dv01", "to": "ba_dv01", "type": "HAS_BREACH_ACTION", "provenance": {"source_doc": "sample_fund_guidelines.pdf", "page": 2, "chunk_id": "chunk_31c8", "ingested_at": "2024-01-15T09:00:00Z", "extraction_confidence": 0.96}},
+    {"from": "ba_dv01", "to": "owner_risk_committee", "type": "OWNED_BY", "provenance": {"source_doc": "sample_fund_guidelines.pdf", "page": 2, "chunk_id": "chunk_31c8", "ingested_at": "2024-01-15T09:00:00Z", "extraction_confidence": 0.95}}
+  ]
+}

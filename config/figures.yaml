@@ -1,0 +1,135 @@
+# Shared figure catalogue — the 13 report rows, in report-template order.
+#
+# This file is FIRM-AGNOSTIC. It declares WHICH figures the report contains and
+# how each binds to the knowledge graph. The actual limit NUMBERS are NOT here —
+# they are read from the graph (which carries them with provenance). Only the
+# DISPLAY style lives here. The method differences between firms live in the
+# per-firm configs (firm_A.yaml / firm_B.yaml), never in this file or in code.
+#
+# Per figure:
+#   id          stable identifier emitted in figures.json
+#   section     report section label (matches the xlsx template)
+#   metric      report row label   (matches the xlsx template)
+#   kind        computation strategy the engine dispatches on
+#   binds       graph entity(ies) the figure is computed over
+#   limit_style how to render the Limit node's min/max as the "Limit" column
+#   value_style how to render the computed value
+#   util_basis  which bound utilization is measured against (max | min | none)
+
+figures:
+  - id: allocation_sgs
+    section: Allocation
+    metric: Singapore Government Securities
+    kind: allocation
+    binds: { asset_class: "Singapore Government Securities" }
+    limit_style: range_pct
+    value_style: pct1
+    util_basis: max
+
+  - id: allocation_mas_bills
+    section: Allocation
+    metric: MAS Bills
+    kind: allocation
+    binds: { asset_class: "MAS Bills" }
+    limit_style: range_pct
+    value_style: pct1
+    util_basis: max
+
+  - id: allocation_ig_corp
+    section: Allocation
+    metric: Investment Grade Corporate Bonds
+    kind: allocation
+    binds: { asset_class: "Investment Grade Corporate Bonds" }
+    limit_style: range_pct
+    value_style: pct1
+    util_basis: max
+
+  - id: allocation_high_yield
+    section: Allocation
+    metric: High Yield Bonds
+    kind: allocation
+    binds: { asset_class: "High Yield Bonds" }
+    limit_style: range_pct
+    value_style: pct1
+    util_basis: max
+
+  - id: allocation_fx_bonds
+    section: Allocation
+    metric: Foreign Currency Bonds (hedged)
+    kind: allocation
+    binds: { asset_class: "Foreign Currency Bonds" }
+    limit_style: range_pct
+    value_style: pct1
+    util_basis: max
+
+  - id: allocation_structured_credit
+    section: Allocation
+    metric: Structured Credit (ABS/MBS)
+    kind: allocation
+    binds: { asset_class: "Structured Credit" }
+    limit_style: range_pct
+    value_style: pct1
+    util_basis: max
+
+  - id: allocation_cash
+    section: Allocation
+    metric: Cash & Cash Equivalents
+    kind: allocation
+    binds: { asset_class: "Cash & Cash Equivalents" }
+    limit_style: min_pct        # answer key shows the binding "min 5%"
+    value_style: pct1
+    util_basis: none            # min-floor allocation: utilization shown as n/a
+
+  - id: aggregate_non_ig_exposure
+    section: Aggregate
+    metric: Aggregate non-IG exposure
+    kind: aggregate_non_ig
+    binds: { aggregate: "non_ig" }
+    limit_style: max_pct
+    value_style: pct1
+    util_basis: max
+
+  - id: concentration_single_corporate
+    section: Concentration
+    metric: Largest single corporate issuer
+    kind: concentration_corporate
+    binds: { cap: "single_issuer" }
+    limit_style: max_pct
+    value_style: pct1
+    util_basis: max
+
+  - id: concentration_largest_gre
+    section: Concentration
+    metric: Largest GRE issuer
+    kind: concentration_gre
+    binds: { cap: "gre" }
+    limit_style: max_pct
+    value_style: pct1
+    util_basis: max
+
+  - id: liquidity_ratio
+    section: Liquidity
+    metric: Liquid assets ratio
+    kind: liquidity
+    binds: { floor: "liquid_assets" }
+    limit_style: min_pct
+    value_style: pct1
+    util_basis: min             # liquidity utilization measured vs the floor
+
+  - id: portfolio_modified_duration
+    section: Market risk
+    metric: Portfolio modified duration
+    kind: duration
+    binds: { metric: "modified_duration" }
+    limit_style: range_yrs
+    value_style: yrs2
+    util_basis: none            # range metric: utilization n/a
+
+  - id: portfolio_dv01
+    section: Market risk
+    metric: Portfolio DV01
+    kind: dv01
+    binds: { metric: "dv01" }
+    limit_style: max_amount
+    value_style: sgd_per_bp
+    util_basis: max

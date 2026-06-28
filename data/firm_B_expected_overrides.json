@@ -1,0 +1,7 @@
+{
+  "_comment": "Firm B's answer key is Firm A's, with these rows overridden per firm_B_brief.md. Source: sample_docs/firm_B_brief.md expected-answer-key table. Utilization is reported in truncated bps under Firm B (representational), so reconciliation compares Value/Limit/Status.",
+  "overrides": {
+    "Aggregate non-IG exposure": {"Value": "21.0%", "Status": "BREACH"},
+    "Largest GRE issuer": {"Value": "13.0%", "Status": "BREACH"}
+  }
+}

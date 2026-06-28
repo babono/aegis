@@ -1,0 +1,33 @@
+# Firm A — default house conventions.
+#
+# This file expresses Firm A's METHOD. Switching to Firm B means loading
+# firm_B.yaml instead — no engine code changes. The engine implements every
+# strategy named below; the config only SELECTS which one each firm uses.
+firm: A
+name: "Firm A — default house conventions"
+
+methods:
+  # How aggregate non-IG membership is determined.
+  #   asset_class               -> only holdings in High Yield + Structured Credit
+  #   rating_incl_fallen_angels -> any holding currently rated below IG, regardless
+  #                                of asset class (Firm B convention #1)
+  non_ig_membership: asset_class
+
+  # The investment-grade boundary used by the fallen-angel rule. Ratings strictly
+  # below this (BB+ and lower) are non-investment-grade.
+  ig_floor_rating: "BBB-"
+
+  # How issuer concentration for government-related entities is grouped.
+  #   issuer        -> each legal issuer tested on its own
+  #   parent_issuer -> issuers sharing a parent are aggregated (Firm B convention #2)
+  gre_grouping: issuer
+
+  # How utilization is rendered in the report.
+  #   percent_1dp    -> "58.3%"
+  #   truncated_bps  -> "5833 bps"  (Firm B convention #3)
+  utilization_format: percent_1dp
+
+rounding:
+  value_decimals: 1          # allocation/aggregate/concentration percentages
+  utilization_decimals: 1
+  duration_decimals: 2       # "3.88 yrs"

@@ -1,0 +1,15 @@
+# Core runtime — all deterministic figure computation depends only on these.
+neo4j==5.26.0          # graph store driver (Cypher)
+openpyxl==3.1.5        # read answer key / report template, write report xlsx
+PyYAML==6.0.2          # firm method configs (firm_A.yaml / firm_B.yaml)
+python-dotenv==1.0.1   # load .env for optional LLM key / neo4j uri
+
+# Narrative layer (OPTIONAL — system reproduces every figure without it).
+# DeepSeek is OpenAI-API-compatible, so we use the openai SDK pointed at
+# https://api.deepseek.com. If no key is set, a deterministic mock narrative
+# is used and all figures are still produced by the engine.
+openai==1.59.5
+
+# Re-extraction only (OPTIONAL — a human-approved extraction is committed,
+# so evaluators never need these to reproduce figures).
+pdfplumber==0.11.5

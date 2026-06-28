@@ -1,0 +1,23 @@
+# Firm B — same fund, same holdings, three differing house conventions.
+#
+# This file is the ENTIRE difference between reproducing Firm A's answer key and
+# Firm B's. No engine code changes when switching. Compare against firm_A.yaml:
+# only the three `methods` lines marked below differ.
+firm: B
+name: "Firm B — fallen-angel + parent-GRE + bps conventions"
+
+methods:
+  # Convention #1: fallen angels count toward non-IG even inside the IG-corp class.
+  non_ig_membership: rating_incl_fallen_angels      # <-- differs from Firm A
+  ig_floor_rating: "BBB-"
+
+  # Convention #2: GREs sharing a parent are aggregated and tested as one group.
+  gre_grouping: parent_issuer                       # <-- differs from Firm A
+
+  # Convention #3: utilization reported in truncated basis points.
+  utilization_format: truncated_bps                 # <-- differs from Firm A
+
+rounding:
+  value_decimals: 1
+  utilization_decimals: 1
+  duration_decimals: 2

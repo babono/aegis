@@ -1,0 +1,6 @@
+# Web backend deps (FastAPI). Includes the core engine deps.
+# The graded core submission does NOT need these — only the web product does.
+-r requirements.txt
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+python-multipart==0.0.20
