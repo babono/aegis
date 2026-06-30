@@ -10,6 +10,7 @@ output/*.json
 data/extracted_graph.candidate.json
 .env
 .DS_Store
+homework_brief.pdf
 web/node_modules/
 web/.next/
 web/next-env.d.ts
