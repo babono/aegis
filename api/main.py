@@ -14,6 +14,12 @@ import os
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 
+try:  # load a local .env if present (no-op in prod, where env vars are injected)
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
+
 from api import services
 
 app = FastAPI(

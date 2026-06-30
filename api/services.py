@@ -41,6 +41,28 @@ RULE_FOR_KIND = {
     "concentration_gre": "gre_grouping",
 }
 
+# Narrative cache (per firm, per process). The figures for a given firm are
+# deterministic, so the narrative is too — there's no reason to call the LLM on
+# every page load / firm toggle. This bounds DeepSeek usage to at most one call
+# per firm until the process restarts, keeping the public demo fast and cheap.
+# (The numbers never depend on this; only the prose does.)
+_NARRATIVE_CACHE: dict[str, dict] = {}
+
+
+def _narrative_for(firm: str, figures: list[dict]) -> dict:
+    if firm in _NARRATIVE_CACHE:
+        return _NARRATIVE_CACHE[firm]
+    nar = narrative_gen.generate(firm, figures)
+    fw = firewall.check(nar["text"], figures)
+    if not fw["passed"]:
+        # Reject any LLM narrative that introduces a number; fall back to mock.
+        nar = {"text": narrative_gen._mock_narrative(firm, figures),
+               "source": "mock (firewall rejected LLM narrative)"}
+        fw = {"llm_rejected": True, **firewall.check(nar["text"], figures)}
+    result = {"narrative": nar, "firewall": fw}
+    _NARRATIVE_CACHE[firm] = result
+    return result
+
 
 def list_firms() -> list[dict]:
     firms = []
@@ -71,12 +93,8 @@ def compute_bundle(firm: str) -> dict[str, Any]:
     figures = compute_all(client, cfg, chunks)
     client.close()
 
-    nar = narrative_gen.generate(firm, figures)
-    fw = firewall.check(nar["text"], figures)
-    if not fw["passed"]:
-        nar = {"text": narrative_gen._mock_narrative(firm, figures),
-               "source": "mock (firewall rejected LLM narrative)"}
-        fw = {"llm_rejected": True, **firewall.check(nar["text"], figures)}
+    cached = _narrative_for(firm, figures)
+    nar, fw = cached["narrative"], cached["firewall"]
 
     expected = build_expected(
         firm, os.path.join(DOCS_DIR, "firm_A_answer_key.xlsx"),

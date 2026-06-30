@@ -20,6 +20,12 @@ import json
 import os
 import sys
 
+try:  # load a local .env if present, so DEEPSEEK_API_KEY etc. work locally
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
+
 from src.util import canonical_json, sha256
 from src.audit.log import AuditLog
 from src.config.loader import load_config
