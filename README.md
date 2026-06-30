@@ -111,8 +111,9 @@ writes only narrative, and a **firewall** rejects any number it introduces that 
 engine did not compute. Every step is appended to a hash-chained, UPDATE/DELETE-proof
 audit log.
 
-See `docs/` for the flow + audit catalogue (`01`), architecture (`02`), and the RFC
-(`03`) that derives the design from the constraints.
+See `docs/` for the flow + audit catalogue (`01`), architecture (`02`), the RFC
+(`03`) that derives the design from the constraints, a plain-language **logic
+walkthrough** (`05`), and **notes / trade-offs / what I'd improve** (`06`).
 
 ## Repository layout
 
@@ -134,7 +135,8 @@ src/
   reconcile/ diff vs answer keys
   report/    xlsx writer
   audit/     append-only, hash-chained log
-docs/        01 flows + audit events · 02 architecture · 03 RFC
+docs/        01 flows + audit events · 02 architecture · 03 RFC ·
+             05 plain-language logic walkthrough · 06 notes & reflections
 tests/       one test per constraint + append-only audit
 sample_docs/ provided materials
 ```
