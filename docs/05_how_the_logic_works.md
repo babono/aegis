@@ -128,28 +128,30 @@ editing history breaks the chain. `verify_chain()` checks it.
 
 ---
 
-## 5. The reviewer's likely questions — and how to answer them
+## 5. Design FAQ
 
-Practice saying these in your own words:
+Common questions about how the system meets its requirements:
 
-- **"Trace one figure to its source."** → Use the §3 example: non-IG 15% comes
-  from High Yield + Structured Credit positions; the graph path goes through the
-  `non_ig` aggregate to the limit; the citation is guidelines p.2.
-- **"How do you *know* the AI didn't compute a number?"** → The engine never
-  imports the AI; the AI only writes prose; the firewall rejects any number in
-  that prose that the engine didn't produce.
-- **"Show me Firm B without a code change."** → Open `firm_B.yaml`, point at the
-  three method knobs, run `--firm B`; non-IG and GRE flip to BREACH.
-- **"Is it deterministic? Prove it."** → `Decimal` everywhere + frozen
-  timestamps; run twice and diff the JSON.
-- **"Why a graph at all — why not just compute from the CSV?"** → Because the
-  brief requires *traceability through the graph*: every figure's inputs are
-  pulled from graph nodes that carry their own source/page provenance, so the
-  `figure → graph path → source` chain is real, not decorative.
-- **"What's the weakest part?"** → Be honest: the guidelines extraction is
-  AI-assisted then human-approved and frozen; for production I'd harden that
-  pipeline, add auth on the audit store, and model ratings/currencies more fully.
-  (See `docs/06_notes_and_reflections.md`.)
+- **How is a figure traced to its source?** → See the §3 example: non-IG 15%
+  comes from High Yield + Structured Credit positions; the graph path runs
+  through the `non_ig` aggregate to the limit; the citation resolves to
+  guidelines p.2. Every figure emits `value + graph_path + citation`.
+- **How is the LLM prevented from producing a number?** → The engine never
+  imports the LLM; the LLM only writes prose; the firewall rejects any number in
+  that prose that the engine didn't produce (§4, constraint 3).
+- **How do I produce Firm B's figures?** → Load `firm_B.yaml` (three method
+  knobs); run `--firm B`. No engine edit — non-IG and GRE flip to BREACH.
+- **Is the output deterministic?** → `Decimal` arithmetic + a single rounding
+  rule + frozen timestamps; run twice and diff the JSON to confirm byte-identical
+  output (`tests/test_constraints.py::test_reproducible_byte_identical`).
+- **Why a knowledge graph instead of computing directly from the CSV?** → Because
+  every figure's inputs are pulled from graph nodes that carry their own
+  source/page provenance, so the `figure → graph path → source` chain is real,
+  not decorative — and multi-hop questions are answered by traversal.
+- **What are the known limitations?** → The guidelines extraction is
+  AI-assisted, human-approved, and frozen; production hardening (auth, a managed
+  graph DB, broader rating/currency modelling) is out of scope. See
+  `docs/06_notes_and_reflections.md`.
 
 ---
 
