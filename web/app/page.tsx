@@ -119,7 +119,7 @@ export default function Dashboard() {
                 <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-ink-3">
                   LLM narrative (commentary only — firewall-verified)
                 </p>
-                <p className="text-sm text-ink-1">{data.narrative}</p>
+                <NarrativeText text={data.narrative} />
               </div>
             )}
           </>
@@ -223,6 +223,49 @@ function FiguresTable({ data, onSelect }: { data: FiguresResponse; onSelect: (id
           })}
         </tbody>
       </table>
+    </div>
+  );
+}
+
+// Minimal, safe Markdown for the LLM narrative: renders **bold** / *italic*,
+// bullet lines, and paragraph breaks as React elements (no raw HTML, no XSS).
+function renderInline(text: string, keyBase: string): React.ReactNode[] {
+  const out: React.ReactNode[] = [];
+  const re = /\*\*([^*]+)\*\*|\*([^*]+)\*/g;
+  let last = 0;
+  let m: RegExpExecArray | null;
+  let i = 0;
+  while ((m = re.exec(text)) !== null) {
+    if (m.index > last) out.push(text.slice(last, m.index));
+    if (m[1] !== undefined) {
+      out.push(<strong key={`${keyBase}-b${i++}`} className="font-bold text-ink-0">{m[1]}</strong>);
+    } else {
+      out.push(<em key={`${keyBase}-i${i++}`}>{m[2]}</em>);
+    }
+    last = re.lastIndex;
+  }
+  if (last < text.length) out.push(text.slice(last));
+  return out;
+}
+
+function NarrativeText({ text }: { text: string }) {
+  const blocks = text.trim().split(/\n{2,}/);
+  return (
+    <div className="space-y-2 text-sm leading-relaxed text-ink-1">
+      {blocks.map((block, bi) => {
+        const lines = block.split(/\n/);
+        const isList = lines.every((l) => /^\s*[-*]\s+/.test(l));
+        if (isList) {
+          return (
+            <ul key={bi} className="ml-5 list-disc space-y-1">
+              {lines.map((l, li) => (
+                <li key={li}>{renderInline(l.replace(/^\s*[-*]\s+/, ""), `${bi}-${li}`)}</li>
+              ))}
+            </ul>
+          );
+        }
+        return <p key={bi}>{renderInline(block.replace(/\n/g, " "), `${bi}`)}</p>;
+      })}
     </div>
   );
 }
