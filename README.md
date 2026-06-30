@@ -1,17 +1,17 @@
-# Meridian Compliance Reporting — InterOpera Take-Home
+<p align="center">
+  <img src="docs/banner.png" alt="Aegis — Meridian Compliance Reporting" width="100%" />
+</p>
+
+<p align="center">
+  🟢 <b>Live demo:</b> <a href="https://aegis.babon.io">aegis.babon.io</a>
+  &nbsp;·&nbsp; <b>Source:</b> <a href="https://github.com/babono/aegis">github.com/babono/aegis</a>
+</p>
 
 An audit-defensible system that produces a regulatory compliance report for the
 Meridian Fixed Income Fund. It turns a guidelines PDF + a holdings snapshot into a
 report where **every figure is reproducible, traceable through a knowledge graph to
 its source passage, and provably not produced by a language model** — and where the
 same engine reproduces a second firm's answer key by configuration alone.
-
-## Demo
-
-![Dashboard demo — switch Firm A/B and trace a figure to its source](docs/demo.gif)
-
-*Switch **Firm A → Firm B** and three figures change (configuration only, no code edit);
-click any figure for its **graph path**, **source citation**, and **delta vs the answer key**.*
 
 ## Quick start
 
